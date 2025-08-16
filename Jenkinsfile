@@ -26,11 +26,12 @@ pipeline {
         }
         stage('Push to Docker Hub') {
             agent {
-                docker {
-                    image 'docker:25.0.3'
-                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
+    docker {
+        image 'docker:25.0.3-dind'
+        args '-u root -v /var/run/docker.sock:/var/run/docker.sock'
+    }
+}
+
              steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
                     sh "docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD"
